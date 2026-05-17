@@ -1,10 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 const CartItem = ({ item, onUpdateQuantity, onRemoveItem }) => {
-  // Destructure properties from the item object
   const { id, name, price, quantity, image } = item;
 
-  // Calculate the subtotal for this specific item
   const itemSubtotal = (price * quantity).toFixed(2);
 
   const handleIncrease = () => {
@@ -15,35 +13,29 @@ const CartItem = ({ item, onUpdateQuantity, onRemoveItem }) => {
     if (quantity > 1) {
       onUpdateQuantity(id, quantity - 1);
     } else {
-      // Automatically remove if quantity drops below 1
       onRemoveItem(id);
     }
   };
 
   return (
     <div style={styles.cartItem}>
-      {/* Item Image */}
       <img src={image} alt={name} style={styles.image} />
 
-      {/* Item Details */}
       <div style={styles.details}>
         <h4 style={styles.name}>{name}</h4>
         <p style={styles.price}>${price.toFixed(2)} each</p>
       </div>
 
-      {/* Quantity Controls */}
       <div style={styles.quantityContainer}>
         <button onClick={handleDecrease} style={styles.qtyButton}>-</button>
         <span style={styles.quantity}>{quantity}</span>
         <button onClick={handleIncrease} style={styles.qtyButton}>+</button>
       </div>
 
-      {/* Item Subtotal */}
       <div style={styles.subtotal}>
         <p>Total: <strong>${itemSubtotal}</strong></p>
       </div>
 
-      {/* Remove Button */}
       <button onClick={() => onRemoveItem(id)} style={styles.removeButton}>
         Remove
       </button>
@@ -51,7 +43,34 @@ const CartItem = ({ item, onUpdateQuantity, onRemoveItem }) => {
   );
 };
 
-// Inline styles for quick layout setup
+const Cart = ({ items, onUpdateQuantity, onRemoveItem }) => {
+  // ✅ Calculate total cart amount
+  const totalAmount = useMemo(() => {
+    return items.reduce((sum, item) => {
+      return sum + item.price * item.quantity;
+    }, 0);
+  }, [items]);
+
+  return (
+    <div>
+      {/* Cart Items */}
+      {items.map((item) => (
+        <CartItem
+          key={item.id}
+          item={item}
+          onUpdateQuantity={onUpdateQuantity}
+          onRemoveItem={onRemoveItem}
+        />
+      ))}
+
+      {/* Cart Total */}
+      <div style={styles.totalContainer}>
+        <h3>Total Amount: ${totalAmount.toFixed(2)}</h3>
+      </div>
+    </div>
+  );
+};
+
 const styles = {
   cartItem: {
     display: 'flex',
@@ -106,6 +125,13 @@ const styles = {
     borderRadius: '4px',
     cursor: 'pointer',
   },
+  totalContainer: {
+    textAlign: 'right',
+    padding: '16px',
+    borderTop: '2px solid #000',
+    marginTop: '10px',
+    fontSize: '18px',
+  },
 };
 
-export default CartItem;
+export default Cart;
