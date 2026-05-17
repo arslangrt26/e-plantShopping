@@ -1,27 +1,37 @@
-// App.jsx
-import React from "react";
+import React, { useState } from "react";
 
 export default function App() {
+  const [showProducts, setShowProducts] = useState(false);
+
+  const products = [
+    "Snake Plant",
+    "Peace Lily",
+    "Aloe Vera",
+    "Spider Plant",
+  ];
+
   return (
     <div style={styles.page}>
       <header style={styles.navbar}>
-        <h1 style={styles.logo}>NovaTech Solutions</h1>
+        <h1 style={styles.logo}>Welcome to Paradise Nursery</h1>
       </header>
 
       <main style={styles.heroSection}>
         <div style={styles.content}>
           <h2 style={styles.heading}>
-            Build Smarter Digital Experiences
+            Bring Nature Into Your Home
           </h2>
 
           <p style={styles.description}>
-            NovaTech Solutions helps businesses grow with modern web
-            applications, cloud solutions, and user-focused digital products.
-            We create scalable technology that drives innovation and delivers
-            real business results.
+            Paradise Nursery offers beautiful, healthy indoor plants to help
+            you create a greener, fresher, and more peaceful living space.
+            Discover plants that fit your lifestyle and environment.
           </p>
 
-          <button style={styles.button}>
+          <button
+            style={styles.button}
+            onClick={() => setShowProducts(true)}
+          >
             Get Started
           </button>
         </div>
@@ -30,11 +40,22 @@ export default function App() {
           <h3 style={styles.cardTitle}>Why Choose Us?</h3>
 
           <ul style={styles.list}>
-            <li>✔ Modern & Responsive Design</li>
-            <li>✔ Fast and Secure Applications</li>
-            <li>✔ Scalable Cloud Solutions</li>
-            <li>✔ 24/7 Technical Support</li>
+            <li>✔ Fresh & Healthy Plants</li>
+            <li>✔ Easy Home Delivery</li>
+            <li>✔ Care Guidance Included</li>
+            <li>✔ Affordable Pricing</li>
           </ul>
+
+          {showProducts && (
+            <div style={{ marginTop: "20px" }}>
+              <h4>Our Products:</h4>
+              <ul style={styles.list}>
+                {products.map((item, index) => (
+                  <li key={index}>🌿 {item}</li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </main>
     </div>
@@ -58,7 +79,7 @@ const styles = {
     margin: 0,
     fontSize: "28px",
     fontWeight: "bold",
-    color: "#38bdf8",
+    color: "#22c55e",
   },
 
   heroSection: {
@@ -90,7 +111,7 @@ const styles = {
   },
 
   button: {
-    backgroundColor: "#38bdf8",
+    backgroundColor: "#22c55e",
     color: "#0f172a",
     border: "none",
     padding: "14px 28px",
